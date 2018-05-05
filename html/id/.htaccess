@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteRule ^([A-Za-z][0-9A-Za-z_-]{1,30}[0-9A-Za-z])$ by-id.php?hatena_id=$1 [L,QSA]
+
+RewriteRule ^$ by-id.php [L,QSA]
