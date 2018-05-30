@@ -69,7 +69,7 @@ $data["plot"]["ham"]["json"] = json_encode(array("values"=>$data["plot"]["ham"][
     <header class="header">
       <nav class="nav">
         <div class="navGroup navGroup--left">
-          <a class="nav__item logo" href="http://haikuantispam.lightni.ng">
+          <a class="nav__item logo" href="https://haikuantispam.lightni.ng">
             <svg class="foxySVG" width="178px" height="169px" viewBox="0 0 178 169">
               <path class="fill--outline" d="M68.0717968,25.660254 C73.0435464,17.048931 84.0510372,14.1012631 92.6660445,19.0751399 L111.076393,29.7043595 C111.472756,29.4786631 146.379518,11.6846411 148.379489,10.9459307 C156.920759,7.79112433 163.802404,7.85285923 170.129219,12.5152998 C175.342085,16.3568342 177.382644,21.7083899 177.378498,28.5473209 C177.376764,31.4078731 176.9935,34.6041556 176.247659,38.4019376 C175.339763,43.0248965 174.206921,47.3566033 171.890483,55.2324949 C170.87731,58.6772805 158.722075,89.0619026 158.722075,89.0619026 C158.906984,91.028659 159.499321,105 157.240286,109.818163 C160.970252,110.900725 163.477144,114.589833 162.924969,118.593099 C162.88918,118.85257 162.828475,119.225261 162.738224,119.696783 C162.599844,120.419766 162.422707,121.209475 162.201346,122.052128 C161.567706,124.464195 160.690323,126.884507 159.499321,129.209659 C158.257836,131.633366 156.760245,133.796875 154.992438,135.612693 C155.062804,137.029764 154.756676,138.486046 154.023165,139.830817 C153.90628,140.045106 149.800675,145.589406 148.137688,147.11381 C141.209796,153.464379 132.243944,156.221989 122.076875,153.315844 C112.139751,158.331146 101.016334,161 89.5,161 C77.8400454,161 66.584162,158.263982 56.556762,153.129655 C46.1495951,156.333953 36.9494558,153.610359 29.8623116,147.11381 C28.1993252,145.589406 24.0937202,140.045106 23.9768354,139.830817 C23.2433241,138.486046 22.9371964,137.029764 23.0075621,135.612693 C20.1228036,134 15.6500619,122.186198 15.075031,118.593099 C14.5,115 17.4649846,110.293126 21.7084835,109.604469 C20.1228036,105 20.0410371,92.3598762 20.1228036,91.0473669 C20.1228036,91.0473669 7.12268973,58.6772805 6.10951748,55.2324949 C3.79307878,47.3566033 2.6602368,43.0248965 1.75234101,38.4019376 C1.00650044,34.6041556 0.623236255,31.4078731 0.621501989,28.5473209 C0.617355751,21.7083899 2.65791461,16.3568342 7.87078081,12.5152998 C14.1975961,7.85285923 21.0792409,7.79112433 29.6205105,10.9459307 C31.6204825,11.6846411 66.1978362,29.2917003 66.4357357,29.426865 C66.8302133,28.1305955 67.3752619,26.8666877 68.0717968,25.660254 Z"></path>
               <path class="fill-black"  d="M151.151338,18.4503865 C156.919499,16.3198565 161.348576,15.9821837 165.383246,18.9554662 C168.494585,21.2483148 169.380972,24.4638671 169.378499,28.5424707 C169.377079,30.8861117 146.802715,96.6410497 146.802715,96.6410497 L104.535515,42.750706 C104.535515,42.750706 149.343958,19.1179611 151.151338,18.4503865 Z"></path>
@@ -93,7 +93,7 @@ $data["plot"]["ham"]["json"] = json_encode(array("values"=>$data["plot"]["ham"][
         <ul class="navGroup navGroup--right nav__links">
           <li class="nav__item"><a href="https://github.com/sudofox/hatena-haiku-spam-filter">GitHub Project</a></li>|
           <li class="nav__item"><a href="http://profile.hatena.ne.jp/austinburk/">id:austinburk on Hatena</a></li>|
-          <li class="nav__item"><a href="/id/enter_id_in_url">Lookup by Hatena ID</a></li> 
+          <li class="nav__item"><a href="/id/enter_id_in_url">Lookup by Hatena ID</a></li>
         </ul>
       </nav>
     </header>
@@ -106,7 +106,7 @@ var data = <?php echo json_encode(array(array(
 		"name"		=>	"Spam",
 		"text"		=>	"Spam",
 		"hoverinfo"	=>	"label+percent+value+name",
-		"domain"	=>	array(x=>array(0, .5 )),
+		"domain"	=>	array("x"=>array(0, .5 )),
 		"hole"		=>	.4,
 		"type"		=>	"pie"
 		),
@@ -117,7 +117,7 @@ var data = <?php echo json_encode(array(array(
 		"text"		=>	"Real",
                 "name"          =>	"Real",
                 "hoverinfo"     =>	"label+percent+value+name",
-		"domain"	=>	array(x=>array(0.5, 1)),
+		"domain"	=>	array("x"=>array(0.5, 1)),
                 "hole"          =>	.4,
                 "type"          =>	"pie"
 		)
@@ -186,6 +186,29 @@ var layout = {
 };
 
 Plotly.newPlot('mainStats', data, layout);
+
+// I'm really not liking Plotly.js very much right now....maybe I should look for a better graph lib
+// This mostly fixes the 'million lines' issue with the chart.
+var minimumDisplayPercentage = 0;
+document.querySelectorAll("g.trace")[1].childNodes.forEach(function(node) {
+	if (node.querySelector("path.textline")) {
+		if (minimumDisplayPercentage == 0) {
+			minimumDisplayPercentage = node.querySelector("g.slicetext > text").innerHTML.replace(/[^0-9.]/g, "");
+		}
+		node.querySelector("path.textline").remove();
+	}
+	if (node.querySelector("g.slicetext > text").innerHTML.replace(/[^0-9.]/g, "") <= minimumDisplayPercentage) {
+		node.querySelector("g.slicetext").remove();
+	}
+});
+document.querySelectorAll("g.trace")[1].childNodes.forEach(function(node) {
+	if (node.querySelector("g.slicetext")) {
+		if (node.querySelector("g.slicetext > text").innerHTML.replace(/[^0-9.]/g, "") <= minimumDisplayPercentage) {
+			node.querySelector("g.slicetext").remove();
+		}
+	}
+});
+
 mainStats.on('plotly_click', function(data) {
 	console.log(data);
 	console.log("Clicked on " +data.points[0].label);
@@ -200,10 +223,11 @@ mainStats.on('plotly_click', function(data) {
           <h2 class="post__title"><a href="">Details</a></h2>
         </div>
 	<div class="post__body">
-	 <p>The charts above show recorded Haiku entries, and their automatic classifications, from the past 24 hours.</p>
-	 <p>Click on one of the pie slices to open the user's classification details in a new tab!</p>
-	 <p>Please note that this is a work in progress! I will update this soon :)</p>
-	 <p>I enjoy Hatena's services and decided to make something to help out a bit.</p>
+	<p>The charts above show recorded Haiku entries, and their automatic classifications, from the past 24 hours.</p>
+	<p>I frequently do manual classification of posts, and update my custom rules and filters to better train the system.</p>
+	<p>Click on one of the pie slices to open the user's classification details in a new tab!</p>
+	<p>Please note that this is a work in progress! I will update this soon :)</p>
+	<p>I enjoy Hatena's services and decided to make something to help out a bit.</p>
 	</div>
       </article>
     </section>

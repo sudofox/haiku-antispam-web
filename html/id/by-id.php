@@ -7,7 +7,6 @@
 require_once '/home/haiku-watch/config.php';
 
 if (isset($_GET["hatena_id"]) && (preg_match("/^[A-Za-z][0-9A-Za-z_-]{1,30}[0-9A-Za-z]$/", $_GET["hatena_id"]))) {
-	error_log($_GET["hatena_id"]);
 	$hatena_id = $_GET["hatena_id"];
 } else {
 	header("Location: /id/example");
@@ -22,7 +21,6 @@ $threshold = 5;
 $data["query"]["entries"] = $db->query("SELECT * from antispam_unclassified where hatena_id like '$hatena_id'");
 $data["query"]["summary"] = $db->query("SELECT count(*) count, avg(spam_check_score) average_score, count(case spam_check_judgement when 1 then 1 else null end) marked_spam, count(case spam_check_judgement when 0 then 1 else null end) marked_ham from antispam_unclassified where hatena_id like '$hatena_id'");
 $data["query"]["summary"] = $data["query"]["summary"]->fetchArray();
-error_log(json_encode($data["query"]["summary"]));
 $data["minScore"] = -10;
 $data["maxScore"] = 10;
 $data["plot"] = array();
@@ -55,7 +53,7 @@ $data["maxScore"]++;
     <meta property="twitter:label1" value="Score Distribution" />
     <meta property="twitter:data1" value="<?php echo ($data["query"]["summary"]["average_score"] > 5) ? ':x:' : ':white_check_mark:'; ?> <?php echo $data["query"]["summary"]["marked_spam"] ." spam, " . $data["query"]["summary"]["marked_ham"] . " not spam"; ?>" />
     <meta property="twitter:label2" value=":bar_chart: Averaged Score" />
-    <meta property="twitter:data2" value="<?php echo round($data["query"]["summary"]["average_score"],2); ?> > 5.0" />
+    <meta property="twitter:data2" value="<?php echo round($data["query"]["summary"]["average_score"],2); ?> <?php echo ($data["query"]["summary"]["average_score"] > 5) ? '>' : '<='; ?> 5.0" />
 
     <link rel="stylesheet" href="https://lightni.ng/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>

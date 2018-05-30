@@ -1,1 +1,5 @@
 Options -Indexes
+
+RedirectMatch 404 /\.git
+RedirectMatch 404 /\.gitignore
+
